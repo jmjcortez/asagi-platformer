@@ -4,16 +4,33 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
+    public static WeaponController instance;
     public GameObject projectile;
-    public Transform shotPoint;
 
-    // Update is called once per frame
+    private float timeBtwShots; //counter
+    public float startTimeBtwShots;
+
+    private void Awake() {
+        instance = this;
+    }
+
     void Update()
     {
         
     }
 
-    void Fire() {
-        Instantiate(projectile, shotPoint.position, transform.rotation);
+    public void Fire() {
+        //dapat sa player
+        if (timeBtwShots <= 0) {
+
+            Instantiate(projectile, transform.position, transform.rotation);
+            
+            Instantiate(projectile, transform.position + new Vector3(-0.2f, -0.2f, 0f) , transform.rotation);
+            timeBtwShots = startTimeBtwShots;
+        } 
+        else {
+            timeBtwShots -= Time.deltaTime;
+        }
+
     }
 }

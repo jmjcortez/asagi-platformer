@@ -81,9 +81,9 @@ public class PlayerController : MonoBehaviour
     }
 
     private void CheckAttack() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButton(0)) {
             animator.SetBool("isFiring", true);
-            // asagiRigidBody.velocity = Vector3.zero;            
+            WeaponController.instance.Fire();            
         }
         if (Input.GetMouseButtonUp(0)) {
             animator.SetBool("isFiring", false);
