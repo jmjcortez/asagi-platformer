@@ -43,6 +43,7 @@
      <Compile Include="Assets\Bullet\Scripts\cam.cs" />
      <Compile Include="Assets\Bullet\Scripts\scrollingOffset.cs" />
      <Compile Include="Assets\Scripts\Controller\Camera\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Controller\Camera\ShakeController.cs" />
      <Compile Include="Assets\Scripts\Controller\Enemy\EnemyController.cs" />
      <Compile Include="Assets\Scripts\Controller\Environment\AllCheckpointsController.cs" />
      <Compile Include="Assets\Scripts\Controller\Environment\BackgroundController.cs" />

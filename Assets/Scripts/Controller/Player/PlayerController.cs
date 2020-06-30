@@ -83,10 +83,12 @@ public class PlayerController : MonoBehaviour
     private void CheckAttack() {
         if (Input.GetMouseButton(0)) {
             animator.SetBool("isFiring", true);
+            ShakeController.instance.animator.SetBool("isShaking", true);
             WeaponController.instance.Fire();            
         }
         if (Input.GetMouseButtonUp(0)) {
             animator.SetBool("isFiring", false);
+            ShakeController.instance.animator.SetBool("isShaking", false);
         }
 
         if (Input.GetMouseButtonDown(1)) {
