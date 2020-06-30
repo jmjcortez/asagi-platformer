@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
             Move();
             CheckJump();     
             CheckAttack();
+            CheckUseTabs();
         } else {
             knockBackCounter -= Time.deltaTime;
         }
@@ -110,5 +111,11 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetTrigger("isHurt"); 
+    }
+
+    public void CheckUseTabs() {
+        if (Input.GetButtonDown("Fire2")) {
+            LevelManager.instance.ActivateTab();
+        }
     }
 }

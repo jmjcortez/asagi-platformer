@@ -36,8 +36,16 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Bullet\Scripts\BulletControl.cs" />
+     <Compile Include="Assets\Bullet\Scripts\Manager.cs" />
+     <Compile Include="Assets\Bullet\Scripts\Pooling.cs" />
+     <Compile Include="Assets\Bullet\Scripts\bloodEffect.cs" />
+     <Compile Include="Assets\Bullet\Scripts\cam.cs" />
+     <Compile Include="Assets\Bullet\Scripts\scrollingOffset.cs" />
      <Compile Include="Assets\Scripts\Controller\Camera\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Controller\Enemy\EnemyController.cs" />
      <Compile Include="Assets\Scripts\Controller\Environment\AllCheckpointsController.cs" />
+     <Compile Include="Assets\Scripts\Controller\Environment\BackgroundController.cs" />
      <Compile Include="Assets\Scripts\Controller\Environment\CheckpointController.cs" />
      <Compile Include="Assets\Scripts\Controller\Environment\DamagePlayerController.cs" />
      <Compile Include="Assets\Scripts\Controller\Environment\DestroyOverTime.cs" />
@@ -48,8 +56,10 @@
      <Compile Include="Assets\Scripts\Controller\Environment\TabController.cs" />
      <Compile Include="Assets\Scripts\Controller\Player\HealthController.cs" />
      <Compile Include="Assets\Scripts\Controller\Player\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\Controller\Player\WeaponController.cs" />
      <Compile Include="Assets\Scripts\Controller\UI\UIController.cs" />
      <None Include="Assets\BayatGames\Free Platform Game Assets\Readme.txt" />
+     <None Include="Assets\Bullet\Sprites\ussr_stencil\FREE FONT LICENSE.txt" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/Unity/Hub/Editor/2019.4.1f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
 
-    public float respawnWaitTime;
+    public float respawnWaitTime, tabDuration;
 
     public int tabsCollected;
 
@@ -14,8 +14,8 @@ public class LevelManager : MonoBehaviour
         instance = this;
     }
     void Start()
-    {
-        
+    {   
+        tabsCollected = 0;
     }
 
     // Update is called once per frame
@@ -39,5 +39,22 @@ public class LevelManager : MonoBehaviour
     
         HealthController.instance.currentHealth = HealthController.instance.maxHealth;
         UIController.instance.UpdateHealthDisplay();
+    }
+
+    public void ActivateTab() {
+        if (tabsCollected > 0) {
+            StartCoroutine(SetTabStatus());
+        }    
+    }
+
+    public IEnumerator SetTabStatus() {
+        BackgroundController.instance.animator.SetBool("isOnTabbed", true);
+
+        tabsCollected -= 1;
+        UIController.instance.UpdateTabCount();
+
+        yield return new WaitForSeconds(tabDuration);
+
+        BackgroundController.instance.animator.SetBool("isOnTabbed", false);
     }
 }

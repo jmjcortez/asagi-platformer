@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealthController : MonoBehaviour
 {
     public static HealthController instance;
-
+    public GameObject deathEffect;
     private SpriteRenderer spriteRenderer;
     private float invincibleCounter;
     public int currentHealth, maxHealth;
@@ -44,7 +44,7 @@ public class HealthController : MonoBehaviour
             currentHealth -= 1;
             
             if (currentHealth <= 0) {
-                
+                Instantiate(deathEffect, transform.position, transform.rotation);
                 LevelManager.instance.RespawnPlayer();
             
             } else {
