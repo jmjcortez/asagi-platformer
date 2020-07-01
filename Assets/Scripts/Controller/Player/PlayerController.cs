@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheckPoint;
 
     private Animator animator;
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
         
     private bool isGrounded;
     private float knockBackCounter;
@@ -120,4 +120,5 @@ public class PlayerController : MonoBehaviour
             LevelManager.instance.ActivateTab();
         }
     }
+
 }

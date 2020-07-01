@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public static EnemyController instance;
     public float moveSpeed, moveTime, waitTime;
+    public float health;
     private float moveCount, waitCount;
+    [Range(0, 100)] public float chanceToDrop;
 
     public Transform leftPoint, rightPoint;
 
@@ -16,6 +19,35 @@ public class EnemyController : MonoBehaviour
 
     public SpriteRenderer spriteRenderer;
     private Animator animator;
+    public GameObject deathEffect;
+    public GameObject loot;
+
+    #region Public Variables
+    public Transform rayCast;
+    public LayerMask raycastMask;
+    public float rayCastLength; // sight distance
+    public float attackDistance;
+    public float timer; // cooldown for attacks
+    
+    public GameObject target;
+    public bool inRange;
+
+    #endregion
+
+    #region Private Variables
+    private RaycastHit2D hit;
+    private float distance;
+
+    private bool attackMode;
+    private bool cooling;
+    private float intTimer;
+    #endregion
+
+    private void Awake() {
+        instance = this;
+
+        intTimer = timer;
+    }
 
     void Start()
     {
@@ -32,29 +64,117 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        if (moveCount > 0) {
-            moveCount -= Time.deltaTime;
+        // Move();
 
-            if (movingRight) {
-            enemyRigidBody.velocity = new Vector2(moveSpeed, enemyRigidBody.velocity.y);
-            spriteRenderer.flipX = true;
-
-                if (transform.position.x > rightPoint.position.x) {
-                    movingRight = false;
-                }
-            }
-            else {
-                enemyRigidBody.velocity = new Vector2(-moveSpeed, enemyRigidBody.velocity.y);
-                spriteRenderer.flipX = false;
-
-                if (transform.position.x < leftPoint.position.x) {
-                    movingRight = true;
-                }
-            }
+        // if (inRange) {
+        //     hit = Physics2D.Raycast(rayCast.position, Vector2.left, rayCastLength, raycastMask);
+        //     // RaycastDebugger();
         
-            if(moveCount <= 0) {
-                waitCount = Random.Range(waitTime * 0.75f, waitTime * 1.25f);
-            }
+        //     //when player is detected
+        //     if (hit.collider != null) {
+        //         EnemyLogic();
+        //     }
+        //     else if (hit.collider == null) {
+        //         StopAttack();
+        //     }
+        // } else {
+        //     Move();
+        // }
+
+        if (!movingRight) {
+            hit = Physics2D.Raycast(rayCast.position, Vector2.left, rayCastLength, raycastMask);
+        } else {
+            hit = Physics2D.Raycast(rayCast.position, Vector2.right, rayCastLength, raycastMask);
+        }
+        
+        //when player is detected
+        if (hit.collider != null) {
+            EnemyLogic();
+        }
+        else if (hit.collider == null) {
+            StopAttack();
+            Move();
+        }
+
+    }
+
+    void EnemyLogic() {
+        distance = Vector2.Distance(transform.position, target.transform.position);
+
+        if (distance > attackDistance) {
+            Move2();
+            StopAttack();
+        }
+        else if (attackDistance >= distance && cooling == false) {
+            Attack();
+        }
+
+        if (cooling) {
+            animator.SetBool("isMoving", false);
+            animator.SetBool("isAttacking", false);
+            Cooldown();
+        }
+    }
+
+    void Move2() {
+        animator.SetBool("isMoving", true);
+        if (!animator.GetCurrentAnimatorStateInfo(0).IsName("BearAttack")) {
+            Vector2 targetPosition = new Vector2(target.transform.position.x, transform.position.y);
+
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        }
+    }
+
+    void Attack() {
+        timer = intTimer;   //Reset Timer when player enter attack range
+        attackMode = true;  //to check if enemy can still attack
+
+        Debug.Log("ulo palang");
+
+        animator.SetBool("isMoving", false);
+        animator.SetBool("isAttacking", true);
+    }
+
+    void StopAttack() {
+        cooling = false;
+        attackMode = false;
+        animator.SetBool("isAttacking", false);
+    }
+
+    public void TakeDamage (float damage) {
+        health -= damage;
+
+        if (health <= 0) {
+            Instantiate(deathEffect, transform.position, transform.rotation);
+            Die();
+        }
+    }
+
+    private void Move() {
+            if (moveCount > 0) {
+                moveCount -= Time.deltaTime;
+
+                if (movingRight) {
+                enemyRigidBody.velocity = new Vector2(moveSpeed, enemyRigidBody.velocity.y);
+                spriteRenderer.flipX = true;
+
+                    if (transform.position.x > rightPoint.position.x) {
+                        movingRight = false;
+                    }
+                }
+                else {
+                    enemyRigidBody.velocity = new Vector2(-moveSpeed, enemyRigidBody.velocity.y);
+                    spriteRenderer.flipX = false;
+
+                    if (transform.position.x < leftPoint.position.x) {
+                        Debug.Log("lampas na");
+                        movingRight = true;
+                    }
+                }
+            
+                if(moveCount <= 0) {
+                    waitCount = Random.Range(waitTime * 0.75f, waitTime * 1.25f);
+                }
 
             animator.SetBool("isMoving", true);
         } else if (waitCount > 0) {
@@ -68,6 +188,44 @@ public class EnemyController : MonoBehaviour
             animator.SetBool("isMoving", false);
 
         } 
-                
+    }
+
+    private void Die() {
+        float dropSelect = Random.Range(0, 100f);
+
+        if (dropSelect <= Random.Range(0, 100f)) {
+            Instantiate(loot, transform.position, transform.rotation);
+        }
+
+        Destroy(gameObject);
+    }
+
+    // void OnTriggerEnter2D(Collider2D trig) {
+    //     if(trig.gameObject.tag == "Player") {
+    //         target = trig.gameObject;
+    //         inRange = true;
+    //     }
+    // }
+
+    void RaycastDebugger() {
+        if(distance > attackDistance) {
+            Debug.DrawRay(rayCast.position, Vector2.left * rayCastLength, Color.red);
+        }
+        else if(attackDistance > distance) {
+            Debug.DrawRay(rayCast.position, Vector2.left * rayCastLength, Color.green);
+        }
+    }
+
+    public void TriggerCooling() {
+        cooling = true;
+    }
+
+    void Cooldown() {
+        timer -= Time.deltaTime;
+
+        if (timer <= 0 && cooling && attackMode) {
+            cooling = false;
+            timer = intTimer;
+        }
     }
 }
