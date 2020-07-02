@@ -65,37 +65,19 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         // Move();
-
-        // if (inRange) {
-        //     hit = Physics2D.Raycast(rayCast.position, Vector2.left, rayCastLength, raycastMask);
-        //     // RaycastDebugger();
-        
-        //     //when player is detected
-        //     if (hit.collider != null) {
-        //         EnemyLogic();
-        //     }
-        //     else if (hit.collider == null) {
-        //         StopAttack();
-        //     }
-        // } else {
-        //     Move();
-        // }
-
-        if (!movingRight) {
+        if (inRange) {
             hit = Physics2D.Raycast(rayCast.position, Vector2.left, rayCastLength, raycastMask);
-        } else {
-            hit = Physics2D.Raycast(rayCast.position, Vector2.right, rayCastLength, raycastMask);
+            RaycastDebugger();
         }
-        
+
         //when player is detected
         if (hit.collider != null) {
             EnemyLogic();
         }
         else if (hit.collider == null) {
             StopAttack();
-            Move();
+            animator.SetBool("isMoving", false);
         }
-
     }
 
     void EnemyLogic() {
@@ -110,11 +92,10 @@ public class EnemyController : MonoBehaviour
         }
 
         if (cooling) {
-            animator.SetBool("isMoving", false);
-            animator.SetBool("isAttacking", false);
             Cooldown();
+            animator.SetBool("isAttacking", false);
         }
-    }
+    }  
 
     void Move2() {
         animator.SetBool("isMoving", true);
@@ -128,8 +109,6 @@ public class EnemyController : MonoBehaviour
     void Attack() {
         timer = intTimer;   //Reset Timer when player enter attack range
         attackMode = true;  //to check if enemy can still attack
-
-        Debug.Log("ulo palang");
 
         animator.SetBool("isMoving", false);
         animator.SetBool("isAttacking", true);
@@ -151,30 +130,29 @@ public class EnemyController : MonoBehaviour
     }
 
     private void Move() {
-            if (moveCount > 0) {
-                moveCount -= Time.deltaTime;
+                if (moveCount > 0) {
+            moveCount -= Time.deltaTime;
 
-                if (movingRight) {
-                enemyRigidBody.velocity = new Vector2(moveSpeed, enemyRigidBody.velocity.y);
-                spriteRenderer.flipX = true;
+            if (movingRight) {
+            enemyRigidBody.velocity = new Vector2(moveSpeed, enemyRigidBody.velocity.y);
+            spriteRenderer.flipX = true;
 
-                    if (transform.position.x > rightPoint.position.x) {
-                        movingRight = false;
-                    }
+                if (transform.position.x > rightPoint.position.x) {
+                    movingRight = false;
                 }
-                else {
-                    enemyRigidBody.velocity = new Vector2(-moveSpeed, enemyRigidBody.velocity.y);
-                    spriteRenderer.flipX = false;
+            }
+            else {
+                enemyRigidBody.velocity = new Vector2(-moveSpeed, enemyRigidBody.velocity.y);
+                spriteRenderer.flipX = false;
 
-                    if (transform.position.x < leftPoint.position.x) {
-                        Debug.Log("lampas na");
-                        movingRight = true;
-                    }
+                if (transform.position.x < leftPoint.position.x) {
+                    movingRight = true;
                 }
-            
-                if(moveCount <= 0) {
-                    waitCount = Random.Range(waitTime * 0.75f, waitTime * 1.25f);
-                }
+            }
+        
+            if(moveCount <= 0) {
+                waitCount = Random.Range(waitTime * 0.75f, waitTime * 1.25f);
+            }
 
             animator.SetBool("isMoving", true);
         } else if (waitCount > 0) {
@@ -218,6 +196,7 @@ public class EnemyController : MonoBehaviour
 
     public void TriggerCooling() {
         cooling = true;
+        Debug.Log("triggered");
     }
 
     void Cooldown() {
