@@ -17,7 +17,7 @@ public class DamagePlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
-            // FindObjectOfType<HealthController>().ReceiveDamage();
+            AudioManager.instance.PlaySFX(9);
             HealthController.instance.ReceiveDamage();
         }       
     }

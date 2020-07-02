@@ -16,6 +16,7 @@ public class Projectile : MonoBehaviour
 
     public void Start() {
         Destroy(gameObject, lifetime);
+        AudioManager.instance.PlaySFX(12);
         
         spriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -44,7 +45,7 @@ public class Projectile : MonoBehaviour
             EnemyController enemy = other.transform.parent.GetComponent<EnemyController>();
 
             enemy.TakeDamage(damage);
-            
+
             Destroy(gameObject);
         }
     }

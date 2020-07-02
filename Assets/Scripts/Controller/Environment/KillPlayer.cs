@@ -18,6 +18,7 @@ public class KillPlayer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("Player")) {
+            AudioManager.instance.PlaySFX(8);
             LevelManager.instance.RespawnPlayer();
         }
     }

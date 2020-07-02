@@ -29,6 +29,7 @@ public class Pickup : MonoBehaviour
 
                 isCollected = true;
                 
+                AudioManager.instance.PlaySFX(6);
                 Destroy(gameObject);
 
                 Instantiate(pickupEffect, transform.position, transform.rotation); // create an instance of the first param
@@ -41,6 +42,7 @@ public class Pickup : MonoBehaviour
                     HealthController.instance.HealPlayer();
                     Destroy(gameObject);
 
+                    AudioManager.instance.PlaySFX(7);
                     Instantiate(pickupEffect, transform.position, transform.rotation); // create an instance of the first param
 
                 }

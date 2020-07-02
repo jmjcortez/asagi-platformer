@@ -42,6 +42,7 @@
      <Compile Include="Assets\Bullet\Scripts\bloodEffect.cs" />
      <Compile Include="Assets\Bullet\Scripts\cam.cs" />
      <Compile Include="Assets\Bullet\Scripts\scrollingOffset.cs" />
+     <Compile Include="Assets\Scripts\Controller\Audio\AudioManager.cs" />
      <Compile Include="Assets\Scripts\Controller\Camera\CameraController.cs" />
      <Compile Include="Assets\Scripts\Controller\Camera\ShakeController.cs" />
      <Compile Include="Assets\Scripts\Controller\Enemy\EnemyController.cs" />

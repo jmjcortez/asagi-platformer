@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void Jump() {
+        AudioManager.instance.PlaySFX(10);
         asagiRigidBody.velocity = new Vector2(asagiRigidBody.velocity.x, jumpPower);
     }
 

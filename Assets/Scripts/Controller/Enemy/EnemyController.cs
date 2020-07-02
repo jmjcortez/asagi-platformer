@@ -175,6 +175,8 @@ public class EnemyController : MonoBehaviour
             Instantiate(loot, transform.position, transform.rotation);
         }
 
+        AudioManager.instance.PlaySFX(3);
+
         Destroy(gameObject);
     }
 

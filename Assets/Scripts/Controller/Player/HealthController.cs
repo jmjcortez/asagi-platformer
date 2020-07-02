@@ -45,6 +45,7 @@ public class HealthController : MonoBehaviour
             
             if (currentHealth <= 0) {
                 Instantiate(deathEffect, transform.position, transform.rotation);
+                AudioManager.instance.PlaySFX(8);
                 LevelManager.instance.RespawnPlayer();
             
             } else {

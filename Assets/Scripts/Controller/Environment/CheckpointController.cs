@@ -21,7 +21,7 @@ public class CheckpointController : MonoBehaviour
         if (other.CompareTag("Player")) {
             AllCheckpointsController.instance.DeactivateCheckpoints();
 
-            spriteRenderer.sprite = checkpointOn;  
+            spriteRenderer.sprite = checkpointOn;
             
             AllCheckpointsController.instance.SetSpawnPoint(transform.position);      
         }
